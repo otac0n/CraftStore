@@ -366,7 +366,7 @@ CS.AccountInit = {
   crafting = { researched = {}, researching = {}, studies = {}, stored = {}, skill = {} },
   style = { tracking = {}, knowledge = {} },
   cook =  { tracking = {}, knowledge = {}, ingredients = {} },
-  furnisher =  { tracking = {}, knowledge = {}, ingredients = {} },
+  furnisher =  { tracking = {}, studies = {}, knowledge = {}, ingredients = {} },
   trait = { tracking = {} },
   coords = {
 	style = {500,200}, 
@@ -462,6 +462,7 @@ CS.previewType = {
 CS.LBE = {
 	Cook = "Cook",
 	Furnisher = "Furnisher",
+	FurnisherStudies = "Studies",
 	Styles = "Styles",
 	Crafting = "Crafting",
 	Researched = "Researched",
@@ -474,6 +475,8 @@ CS.Data = {
 	},
 	furnisher = {
 		knowledge = {
+		},
+		studies = {
 		}
 	},
 	style = {
@@ -508,4 +511,11 @@ function CS.Crafting.CompileTraits()
       end
     end
   end	
+end
+
+function CS.Furnisher.CompileFurnishingTypes()
+  if not CS.Furnisher.typeList then CS.Furnisher.typeList = {} end
+  for list=RECIPE_CRAFTING_SYSTEM_ITERATION_BEGIN+1, RECIPE_CRAFTING_SYSTEM_ITERATION_END do
+    if not CS.Furnisher.typeList[list] then CS.Furnisher.typeList[list] = false end
+	end
 end

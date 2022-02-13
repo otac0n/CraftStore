@@ -23,6 +23,7 @@ function CS.RemoveCharacter(char)
 		CS.Account.cook.knowledge[char] = nil
 		CS.Account.furnisher.tracking[char] = nil
 		CS.Account.furnisher.knowledge[char] = nil
+		CS.Account.furnisher.studies[char] = nil
 		CS.Account.trait.tracking[char] = nil
 		CS.Character[char] = nil
 		CS.RemoveCharacterStorage(char)
@@ -140,12 +141,23 @@ function CS.DrawCharacters()
     WM:GetControlByName('CraftStoreFixed_Character'..nr..'Recipe'):SetText(swatch[CS.Account.cook.tracking[char]]..' |t22:22:esoui/art/icons/quest_scroll_001.dds|t')
     WM:GetControlByName('CraftStoreFixed_Character'..nr..'Style'):SetText(swatch[CS.Account.style.tracking[char]]..' |t22:22:esoui/art/icons/quest_book_001.dds|t')
     WM:GetControlByName('CraftStoreFixed_Character'..nr..'Trait'):SetText(swatch[CS.Account.trait.tracking[char]]..' |t22:22:esoui/art/icons/crafting_potent_nirncrux_dust.dds|t')
+    WM:GetControlByName('CraftStoreFixed_Character'..nr..'Furnisher'):SetText(swatch[CS.Account.furnisher.tracking[char]]..' |t22:22:EsoUI/Art/Crafting/provisioner_indexIcon_furnishings_up.dds|t')
   end
 end
 
 -- determines if a character has trait tracking fully enabled
 function CS.UpdateTrackingStatus(char)
 	CS.Account.trait.tracking[char] = LBE:FlattenTable(CS.Data.crafting.studies[char],CS.Name,CS.LBE.Crafting):find("0") == nil and true or false
+end
+
+function CS.UpdateFurnishingStatus(char)
+  for list=RECIPE_CRAFTING_SYSTEM_ITERATION_BEGIN+1, RECIPE_CRAFTING_SYSTEM_ITERATION_END do
+    if not CS.Data.furnisher.studies[char][list] then
+      CS.Account.furnisher.tracking[char] = false
+      return
+    end
+  end
+  CS.Account.furnisher.tracking[char] = true
 end
 
 function CS.DrawTraitColumn(craft,line)
@@ -548,6 +560,7 @@ function CS.UpdateScreen()
   end	
   end
   CS.UpdateAllStudies()
+  CS.UpdateBlueprintStudies()
   CS.UpdateResearchWindows()
   CS.UpdateStyleKnowledge()
   local fmax,fused = GetFenceSellTransactionInfo()
@@ -752,6 +765,12 @@ function CS.UpdateAllStudies()
   end
 end
 
+function CS.UpdateBlueprintStudies()
+  for list=RECIPE_CRAFTING_SYSTEM_ITERATION_BEGIN+1, RECIPE_CRAFTING_SYSTEM_ITERATION_END do
+    CS.BlueprintTrackCategory(list,true)
+  end
+end
+
 function CS.GetTotalSpentSkillPoints()
 local count = 0
 for _, skillTypeData in SKILLS_DATA_MANAGER:SkillTypeIterator() do
@@ -844,6 +863,11 @@ function CS.UpdatePlayer(deactivation)
 		CS.Account.crafting.researched[CS.CurrentPlayer] = LBE:Encode(CS.Data.crafting.researched[CS.CurrentPlayer],CS.Name,CS.LBE.Researched)
 
 		-- any character can be updated for studies
+		for _, char in pairs(CS.GetCharacters()) do
+			if type(CS.Data.furnisher.studies[char]) == 'table' then
+				CS.Account.furnisher.studies[char] = LBE:Encode(CS.Data.furnisher.studies[char],CS.Name,CS.LBE.FurnisherStudies)
+			end
+		end
 		for _, char in pairs(CS.GetCharacters()) do
 			if type(CS.Data.crafting.studies[char]) == 'table' then
 				CS.Account.crafting.studies[char] = LBE:Encode(CS.Data.crafting.studies[char],CS.Name,CS.LBE.Crafting)
@@ -1102,6 +1126,7 @@ function CS.UpdateAccountVars()
   if not CS.Account.trait.tracking[CS.CurrentPlayer] then CS.Account.trait.tracking[CS.CurrentPlayer] = false end
     
   -- only reset studies if nil
+  if not CS.Data.furnisher.studies[CS.CurrentPlayer] then CS.Data.furnisher.studies[CS.CurrentPlayer] = LBE:CloneSchema(CS.Name,CS.LBE.FurnisherStudies) end
   if not CS.Data.crafting.studies[CS.CurrentPlayer] then CS.Data.crafting.studies[CS.CurrentPlayer] = LBE:CloneSchema(CS.Name,CS.LBE.Crafting) end
 end
 
@@ -2526,6 +2551,16 @@ function CS.FilterRecipes()
 	CS.RecipeShowCategory(CS.Character.recipe)
 end
 
+function CS.BlueprintTrackCategory(list,init)
+  local val, tex = {[true]='checked',[false]='unchecked'}, '|t16:16:esoui/art/buttons/checkbox_<<1>>.dds|t'
+  local button, char = WM:GetControlByName('CraftStoreFixed_BlueprintTrackCategoryButton'..list..'Text'), CS.SelectedPlayer
+  if not init then
+    CS.Data.furnisher.studies[char][list] = not CS.Data.furnisher.studies[char][list]
+    CS.UpdateFurnishingStatus(char)
+  end
+  button:SetText(ZOSF(tex,val[CS.Data.furnisher.studies[char][list]]))
+end
+
 function CS.UpdateIcons()
   local pre, icons = 0, {8,5,9,12,7,3,2,1,14,10,6,13,4,11}
   for id,data in pairs(styleNames) do
@@ -2855,8 +2890,15 @@ function CS.IsBlueprintNeeded(link)
 	SELF = false
 	local id, need, unneed = CS.SplitLink(link,3), {}, {}
 	if id then
+    local recipe = nil
+    for _,r in pairs(CS.Furnisher.recipe) do
+      if r.id == id then
+        recipe = r
+        break
+      end
+    end
 		for char,data in pairs(CS.Data.furnisher.knowledge) do
-			if CS.Account.furnisher.tracking[char] then
+			if CS.Account.furnisher.tracking[char] or (recipe and CS.Data.furnisher.studies[char][recipe.stat]) then
 				if not data[id] then
 					if char == CS.CurrentPlayer then SELF = true end
 					table.insert(need,'|cFF1010'..char..'|r')	
@@ -2961,6 +3003,17 @@ function CS.TraitToggle(control,char,text)
 			end	
 		end
 	end	
+	return value
+end
+
+function CS.FurnishingToggle(control,char,text)
+	local value = CS.OptionSelect(control,CS.Account.furnisher.tracking[char],text)
+  for list=RECIPE_CRAFTING_SYSTEM_ITERATION_BEGIN+1, RECIPE_CRAFTING_SYSTEM_ITERATION_END do
+		CS.Data.furnisher.studies[char][list] = value
+		if CS.SelectedPlayer == char then
+			CS.BlueprintTrackCategory(list,true)
+		end
+	end
 	return value
 end
 
@@ -3226,6 +3279,7 @@ function CS.PanelInitialize()
   CraftStoreFixed_Style_Window:SetAnchor(TOPLEFT,GuiRoot,TOPLEFT,CS.Account.coords.style[1],CS.Account.coords.style[2])
   CraftStoreFixed_Recipe_Window:SetAnchor(TOPLEFT,GuiRoot,TOPLEFT,CS.Account.coords.recipe[1],CS.Account.coords.recipe[2])
   CraftStoreFixed_Blueprint_Window:SetAnchor(TOPLEFT,GuiRoot,TOPLEFT,CS.Account.coords.blueprint[1],CS.Account.coords.blueprint[2])
+  CraftStoreFixed_BlueprintTrackerText:SetText(CS.Loc.TT[32])
   CraftStoreFixed_Rune:SetAnchor(TOPLEFT,GuiRoot,TOPLEFT,CS.Account.coords.rune[1],CS.Account.coords.rune[2])
   CraftStoreFixed_Cook:SetAnchor(TOPLEFT,GuiRoot,TOPLEFT,CS.Account.coords.cook[1],CS.Account.coords.cook[2])
   CraftStoreFixed_CharacterPanel:SetAnchor(TOPLEFT,GuiRoot,TOPLEFT,CS.Account.coords.overview[1],CS.Account.coords.overview[2])
@@ -3432,7 +3486,7 @@ function CS.CharacterInitialize()
     btn:SetNormalFontColor(0.9,0.87,0.68,1)
     btn:SetHandler('OnMouseEnter', function(self) CS.Tooltip(self,true,false,self,'bc') end)
     btn:SetHandler('OnMouseExit', function(self) CS.Tooltip(self,false) end)
-    btn:SetHandler('OnClicked', function(self) CS.Account.furnisher.tracking[char] = CS.OptionSelect(self,CS.Account.furnisher.tracking[char],'|t22:22:EsoUI/Art/Crafting/provisioner_indexIcon_furnishings_up.dds|t') end)
+    btn:SetHandler('OnClicked', function(self) CS.Account.furnisher.tracking[char] = CS.FurnishingToggle(self,char,'|t22:22:EsoUI/Art/Crafting/provisioner_indexIcon_furnishings_up.dds|t') end)
     btn.data = { info = CS.Loc.TT[32] }
    
     offset_pos = offset_pos+1

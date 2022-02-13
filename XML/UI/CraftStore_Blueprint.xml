@@ -156,9 +156,6 @@
             <Button name="$(parent)Toggles">
               <Anchor point="2" relativePoint="8" relativeTo="$(parent)CategoryButton7" offsetX="2"/>
               <Dimensions x="235" y="32"/>
-              <OnMouseEnter>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,true,true,self,'bc')</OnMouseEnter>
-              <OnMouseExit>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,false,true)</OnMouseExit>
-              <OnClicked>CraftStoreFixedAndImprovedLongClassName.BlueprintShowCategory(7)</OnClicked>
               <Controls>
                 <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
                   <Anchor point="128"/>
@@ -178,10 +175,143 @@
 				<OnClicked>CraftStoreFixedAndImprovedLongClassName.HideUnknownBlueprints()</OnClicked>
 				</Button>
               </Controls>
-            </Button>		
+            </Button>
+            <Button name="$(parent)TrackCategoryButton1" clickSound="Click">
+              <Anchor point="3" relativePoint="6" relativeTo="$(parent)CategoryButton1" offsetX="0" offsetY="5"/>
+              <Dimensions x="32" y="32"/>
+              <OnMouseEnter>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,true,true,self,'bc')</OnMouseEnter>
+              <OnMouseExit>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,false,true)</OnMouseExit>
+              <OnClicked>CraftStoreFixedAndImprovedLongClassName.BlueprintTrackCategory(1)</OnClicked>
+              <Controls>
+                <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
+                  <Anchor point="128"/>
+                  <Dimensions x="34" y="36"/>
+                  <Edge edgeSize="1"/>
+                </Backdrop>
+                <Label name="$(parent)Text" text="" font="ZoFontGame" color="FFAA33">
+                  <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)" />
+                </Label>
+              </Controls>
+            </Button>
+            <Button name="$(parent)TrackCategoryButton2" clickSound="Click">
+              <Anchor point="2" relativePoint="8" relativeTo="$(parent)TrackCategoryButton1" offsetX="3"/>
+              <Dimensions x="32" y="32"/>
+              <OnMouseEnter>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,true,true,self,'bc')</OnMouseEnter>
+              <OnMouseExit>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,false,true)</OnMouseExit>
+              <OnClicked>CraftStoreFixedAndImprovedLongClassName.BlueprintTrackCategory(2)</OnClicked>
+              <Controls>
+                <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
+                  <Anchor point="128"/>
+                  <Dimensions x="34" y="36"/>
+                  <Edge edgeSize="1"/>
+                </Backdrop>
+                <Label name="$(parent)Text" text="" font="ZoFontGame" color="FFAA33">
+                  <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)" />
+                </Label>
+              </Controls>
+            </Button>
+            <Button name="$(parent)TrackCategoryButton3" clickSound="Click">
+              <Anchor point="2" relativePoint="8" relativeTo="$(parent)TrackCategoryButton2" offsetX="3"/>
+              <Dimensions x="32" y="32"/>
+              <OnMouseEnter>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,true,true,self,'bc')</OnMouseEnter>
+              <OnMouseExit>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,false,true)</OnMouseExit>
+              <OnClicked>CraftStoreFixedAndImprovedLongClassName.BlueprintTrackCategory(3)</OnClicked>
+              <Controls>
+                <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
+                  <Anchor point="128"/>
+                  <Dimensions x="34" y="36"/>
+                  <Edge edgeSize="1"/>
+                </Backdrop>
+                <Label name="$(parent)Text" text="" font="ZoFontGame" color="FFAA33">
+                  <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)" />
+                </Label>
+              </Controls>
+            </Button>
+            <Button name="$(parent)TrackCategoryButton4" clickSound="Click">
+              <Anchor point="2" relativePoint="8" relativeTo="$(parent)TrackCategoryButton3" offsetX="3"/>
+              <Dimensions x="32" y="32"/>
+              <OnMouseEnter>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,true,true,self,'bc')</OnMouseEnter>
+              <OnMouseExit>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,false,true)</OnMouseExit>
+              <OnClicked>CraftStoreFixedAndImprovedLongClassName.BlueprintTrackCategory(4)</OnClicked>
+              <Controls>
+                <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
+                  <Anchor point="128"/>
+                  <Dimensions x="34" y="36"/>
+                  <Edge edgeSize="1"/>
+                </Backdrop>
+                <Label name="$(parent)Text" text="" font="ZoFontGame" color="FFAA33">
+                  <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)" />
+                </Label>
+              </Controls>
+            </Button>
+            <Button name="$(parent)TrackCategoryButton5" clickSound="Click">
+              <Anchor point="2" relativePoint="8" relativeTo="$(parent)TrackCategoryButton4" offsetX="3"/>
+              <Dimensions x="32" y="32"/>
+              <OnMouseEnter>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,true,true,self,'bc')</OnMouseEnter>
+              <OnMouseExit>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,false,true)</OnMouseExit>
+              <OnClicked>CraftStoreFixedAndImprovedLongClassName.BlueprintTrackCategory(5)</OnClicked>
+              <Controls>
+                <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
+                  <Anchor point="128"/>
+                  <Dimensions x="34" y="36"/>
+                  <Edge edgeSize="1"/>
+                </Backdrop>
+                <Label name="$(parent)Text" text="" font="ZoFontGame" color="FFAA33">
+                  <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)" />
+                </Label>
+              </Controls>
+            </Button>
+            <Button name="$(parent)TrackCategoryButton6" clickSound="Click">
+              <Anchor point="2" relativePoint="8" relativeTo="$(parent)TrackCategoryButton5" offsetX="3"/>
+              <Dimensions x="32" y="32"/>
+              <OnMouseEnter>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,true,true,self,'bc')</OnMouseEnter>
+              <OnMouseExit>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,false,true)</OnMouseExit>
+              <OnClicked>CraftStoreFixedAndImprovedLongClassName.BlueprintTrackCategory(6)</OnClicked>
+              <Controls>
+                <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
+                  <Anchor point="128"/>
+                  <Dimensions x="34" y="36"/>
+                  <Edge edgeSize="1"/>
+                </Backdrop>
+                <Label name="$(parent)Text" text="" font="ZoFontGame" color="FFAA33">
+                  <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)" />
+                </Label>
+              </Controls>
+            </Button>
+            <Button name="$(parent)TrackCategoryButton7" clickSound="Click">
+              <Anchor point="2" relativePoint="8" relativeTo="$(parent)TrackCategoryButton6" offsetX="3"/>
+              <Dimensions x="32" y="32"/>
+              <OnMouseEnter>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,true,true,self,'bc')</OnMouseEnter>
+              <OnMouseExit>CraftStoreFixedAndImprovedLongClassName.Tooltip(self,false,true)</OnMouseExit>
+              <OnClicked>CraftStoreFixedAndImprovedLongClassName.BlueprintTrackCategory(7)</OnClicked>
+              <Controls>
+                <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
+                  <Anchor point="128"/>
+                  <Dimensions x="34" y="36"/>
+                  <Edge edgeSize="1"/>
+                </Backdrop>
+                <Label name="$(parent)Text" text="" font="ZoFontGame" color="FFAA33">
+                  <Anchor point="CENTER" relativePoint="CENTER" relativeTo="$(parent)" />
+                </Label>
+              </Controls>
+            </Button>
+            <Button name="$(parent)Tracker">
+              <Anchor point="2" relativePoint="8" relativeTo="$(parent)TrackCategoryButton7" offsetX="2"/>
+              <Dimensions x="235" y="32"/>
+              <Controls>
+                <Backdrop name="$(parent)BG" centerColor="101010" edgeColor="202020">
+                  <Anchor point="128"/>
+                  <Dimensions x="235" y="36"/>
+                  <Edge edgeSize="1"/>
+                </Backdrop>
+                <Label name="$(parent)Text" text="" font="CraftStoreFixedFont" color="E8DFAF">
+                  <Anchor point="LEFT" relativePoint="LEFT" relativeTo="$(parent)" offsetX="10" />
+                </Label>
+              </Controls>
+            </Button>
             <Backdrop name="$(parent)Panel" centerColor="101010" edgeColor="202020" inherits="ZO_ScrollContainerBase">
-              <Anchor point="3" relativePoint="6" relativeTo="$(parent)TopSection" offsetY="38"/>
-              <Dimensions x="480" y="701"/>
+              <Anchor point="3" relativePoint="6" relativeTo="$(parent)TrackCategoryButton1" offsetX="-1" offsetY="3"/>
+              <Dimensions x="480" y="666"/>
               <Edge edgeSize="1"/>
               <OnInitialized>ZO_Scroll_Initialize(self)</OnInitialized>
               <Controls>

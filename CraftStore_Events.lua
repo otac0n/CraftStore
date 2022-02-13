@@ -177,6 +177,7 @@ function CS.OnPlayerActivated(eventCode,initial)
   CS.UpdateStyleKnowledge(true)
   CS.UpdateRecipeKnowledge()
   CS.UpdateAllStudies()
+  CS.UpdateBlueprintStudies()
   CS.UpdateInventory()
   CS.CharacterInitialize()
   CS.GetTimer()
@@ -328,6 +329,7 @@ function CS.OnAddOnLoaded(eventCode,addOnName)
   
   CS.Style = CS.STYLE()
   CS.Style.CompileStyles()
+  CS.Furnisher.CompileFurnishingTypes()
   CS.Style.CompilePartialStyles({[114]=true,[119]=true})
   CS.Crafting.CompileTraits()
   --cs_flask = CS.CS.Flask()  
@@ -337,6 +339,7 @@ function CS.OnAddOnLoaded(eventCode,addOnName)
 	--build schema for data
 	LBE:DefinePrefix("CSCK28",CS.Name,CS.LBE.Cook,64,LBE:ConvertTable(LBE:ConcatTables(CS.Cook.recipelist,CS.Cook.recipeduplicatelist)))
 	LBE:DefinePrefix("CSFK32",CS.Name,CS.LBE.Furnisher,64,LBE:ConvertTable(CS.Furnisher.recipelist))
+	LBE:DefinePrefix("CSFS32",CS.Name,CS.LBE.FurnisherStudies,64,CS.Furnisher.typeList)
 	LBE:DefinePrefix("CSSK29",CS.Name,CS.LBE.Styles.."Old",64,LBE:ConvertTable(CS.Styles.oldlist))
 	LBE:DefinePrefix("CSSK32",CS.Name,CS.LBE.Styles,64,LBE:ConvertTable(CS.Styles.list))
 	LBE:DefinePrefix("CSCS29",CS.Name,CS.LBE.Crafting,64,CS.Crafting.list)
@@ -349,7 +352,10 @@ function CS.OnAddOnLoaded(eventCode,addOnName)
 
 		--furnishing knowledge
 		CS.Data.furnisher.knowledge[char] = LBE:ParseTrusted(CS.Account.furnisher.knowledge[char],CS.Name,CS.LBE.Furnisher)
-		
+
+		--furnishing tracking
+		CS.Data.furnisher.studies[char] = LBE:ParseTrusted(CS.Account.furnisher.studies[char],CS.Name,CS.LBE.FurnisherStudies)
+
 		--style knowledge
 		CS.Data.style.knowledge[char] = LBE:ParseTrusted(CS.Account.style.knowledge[char],CS.Name,CS.LBE.Styles)
 		
