@@ -119,8 +119,8 @@ function CS.STYLE()
 	[122] = {2,3002,171913}, -- Sul-Xan
 	[123] = {2,3094,176058}, -- Crimson Oath
 	[124] = {2,3097,178505}, -- Silver Rose
-	--[125] = {2,?,?}, -- Annihilarch's Chosen
-	--[126] = {2,?,?}, -- Fargrave Guardian
+	[125] = {2,3098,178529}, -- Annihilarch's Chosen
+	[126] = {2,3220,178707}, -- Fargrave Guardian
   }
   --|H1:item:96954:5:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h
   
@@ -232,6 +232,8 @@ function CS.STYLE()
 	[122] = {171912, 171913, 171927, 0}, -- Sul-Xan
 	[123] = {176057, 176058, 176072, 0}, -- Crimson Oath
 	[124] = {178504, 178505, 178519, 0}, -- Silver Rose
+	[125] = {178528, 178529, 178543, 0}, -- Annihilarch's Chosen
+	[126] = {178706, 178707, 178721, 0}, -- Fargrave Guardian
 	}
   
 	--build visual motif number list
@@ -336,8 +338,8 @@ function CS.STYLE()
 				return IsItemLinkBookKnown(('|H1:item:%u:6:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h'):format(styles[style][3]))
 			else      
 				for chapter = 1,14 do
-					local _, known = GetAchievementCriterion(styles[style][2],chapter)
-					if known == 0 then return false end
+					local known = self.IsKnownStyle(style,chapter)
+					if not known then return false end
 				end
 			return true
 			end
@@ -360,11 +362,18 @@ function CS.STYLE()
 			if self.IsCrownStyle(style) then
 				return IsItemLinkBookKnown(('|H1:item:%u:6:1:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0:0|h|h'):format(styles[style][3]))
 			else  
-				local _, known = GetAchievementCriterion(styles[style][2],chapter)
-				if known == 1 then return true end
+				local categoryIndex, collectionIndex = self.GetLoreBookIndicesForStyle(style)
+				local _, _, known = GetLoreBookInfo(categoryIndex, collectionIndex, chapter)
+				return known
 			end
 		end
 		return false
+	end
+	
+	function self.GetLoreBookIndicesForStyle(style)
+		local achievementId = styles[style][2]
+		local collectionId = GetAchievementLinkedBookCollectionId(achievementId)
+		return GetLoreBookCollectionIndicesFromCollectionId(collectionId)
 	end
   
 	function self.UpdatePreview(preview)
